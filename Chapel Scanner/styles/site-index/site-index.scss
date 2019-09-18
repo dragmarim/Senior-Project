@@ -1,0 +1,18 @@
+@import '../base/base';
+
+.home-container{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+
+    .logo{
+        width: 65%;
+    }
+
+    .loading-spinner{
+        margin: 8rem auto 0 auto;
+        width: 8rem;
+    }
+
+}
