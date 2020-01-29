@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+    <head>
+	<title>HU Event Scanner</title>
+ 	<meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <meta http-equiv="refresh" content="3;url=/opt/djangoproject/templates/HU_Event_Scanner_App/login.html"/> -->
+        
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'HU_Event_Scanner_App/site-index.css' %}"/>
+    </head>
+
+    <body>
+        <div class="home-container">
+            <img class="logo" src="{% static 'HU_Event_Scanner_App/logo.png' %}"><br>
+            <img class="loading-spinner" src="{% static 'HU_Event_Scanner_App/loading_scanner.gif' %}">
+        </div>
+
+	<input type="file" id="selectedFile" style="display:none;" accept="image/*" capture="camera" />    
+	<input type="button" style="position:absolute; bottom:10px; border-radius:12px; font-size:30px; border:6px solid #065A0B; text-align:center;" value="Start Scanning" onclick="document.getElementById('selectedFile').click();"/>
+
+</body>
+</html>
+
