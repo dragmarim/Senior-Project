@@ -1,0 +1,134 @@
+<!-- {% load staticfiles %} -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <title>getUserMedia</title>
+
+    <script>
+	document.addEventListener('DOMContentLoaded', function(event) {
+		'use strict';
+
+        	// Put variables in global scope to make them available to the browser console.
+        	const videoConstraints = {
+			facingMode: 'environment'
+		}
+
+		const constraints = window.constraints = {
+          		audio: false,
+          		video: true
+        	};
+
+        	function handleSuccess(stream){
+          		const video = document.querySelector('video');
+          		const videoTracks = stream.getVideoTracks();
+          		console.log('Got stream with constraints:', constraints);
+          		console.log(`Using video device: ${videoTracks[0].label}`);
+          		window.stream = stream; // make variable available to browser console
+          		video.srcObject = stream;
+       	 	}
+
+        	function handleError(error) {
+          		if (error.name === 'ConstraintNotSatisfiedError') {
+            			let v = constraints.video;
+            			errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
+          		} 
+			else if (error.name === 'PermissionDeniedError') {
+            			errorMsg('Permissions have not been granted to use your camera and ' +
+              				 'microphone, you need to allow the page access to your devices in ' +
+              				 'order for the demo to work.');
+          		}
+          		errorMsg(`getUserMedia error: ${error.name}`, error);
+        	}
+
+        	function errorMsg(msg, error) {
+          		const errorElement = document.querySelector('#errorMsg');
+          		errorElement.innerHTML += `<p>${msg}</p>`;
+          		if (typeof error !== 'undefined') {
+            			console.error(error);
+          		}
+        	}
+
+        	async function init(e) {
+          		try {
+            			const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            			handleSuccess(stream);
+            			e.target.disabled = true;
+          		} 
+			catch(e) {
+            			handleError(e);
+          		}
+        	}
+
+       		document.querySelector('#showVideo').addEventListener('click', e => init(e));
+    	});
+    </script>
+
+    <style>
+	video{
+		width: 100%;
+                background: black;
+		height: 30rem;
+	}
+
+	button{
+		width: 15rem;
+		background: #00573F;
+		color: #FFF;
+		text-decoration: none;
+		padding: 1rem 2rem;
+		border: none;
+		border-radius: 6px;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		
+	}
+
+	.choose-event{
+		text-align: center;
+	}
+
+	.choose-event h2{
+		margin-bottom: 0;
+	}
+
+	.choose-event p{
+		margin-bottom: 0;
+	}
+
+	.choose-event select{
+		width: 12.5rem;
+		margin-bottom: 2rem;
+	}
+    </style>
+
+</head>
+
+<body>
+    <div class="choose-event">
+	<h2>Scan Event</h2>
+	<p>Choose Event:</p>
+	<select>
+		{%for event in events %}
+			<option value=" {{event.name}}">{{event.name}}</option>
+		{% endfor %}
+  	</select>
+    </div>
+
+    <div id="container">
+        <video id="gum-local" autoplay playsinline></video>
+        <button id="showVideo">Open Camera</button>
+
+        <div id="errorMsg"></div>
+	<a href="/opt/djangoproject/HU_Event_Scanner_App/templates/HU_Event_Scanner_App/login.html">Test Link</a>
+    </div>
+
+
+<!--    <img src="{% static "HU_Event_Scanner_App/logo.png" %}"/> -->
+    <h1>Test</h1>
+</body>
+</html>

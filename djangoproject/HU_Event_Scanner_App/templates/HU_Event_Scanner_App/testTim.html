@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Video Stream</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" type="text/css" href="{% static "HU_Event_Scanner_App/styles.css" %}"/>
+  <script src="{% static "HU_Event_Scanner_App/videoStream.js" %}"></script>
+</head>
+
+<body>
+<div class="headline">
+	<img src="{% static "HU_Event_Scanner_App/logo.png" %}">
+	<div class="hello">
+		<p>Hello, <span class="username">username></span>
+		<a href="#">Logout</a> 
+	</div>
+</div>
+
+ <div class="choose-event">
+        <p>Select Event</p>
+        <select>
+                {% for e in events %}
+                        <option>{{e.name}}</option>
+                {% endfor %}
+        </select>
+    </div>
+
+    <div id="res">ID result</div>
+
+
+   	<section id="container" class="container">
+        <div class="controls">
+            <fieldset class="input-group">
+            </fieldset>
+            <fieldset class="reader-config-group">
+                <div name="decoder_readers" value="codabar"/>
+                <div name="input-stream_constraints" value="640x480"/>
+                <div name="locator_patch-size" value="medium"/>
+                <div name=locator_half-sample" value="checked"/>
+                <div name="numOfWorkers" value="4"/>
+		<label>
+                    <span>Camera</span>
+                    <select name="input-stream_constraints" id="deviceSelection">
+                    </select>
+                </label>
+                <label style="display: none">
+                    <span>Zoom</span>
+                    <select name="settings_zoom"></select>
+                </label>
+                <label style="display: none">
+                    <span>Torch</span>
+                    <input type="checkbox" name="settings_torch" />
+                </label>
+            </fieldset>
+        </div>
+      <div id="result_strip">
+        <ul class="collector"></ul>
+      </div>
+      <div id="interactive" class="viewport"></div>
+    </section>
+
+    <script src="{% static "HU_Event_Scanner_App/jquery-1.9.0.min.js" %}"  type="text/javascript"></script>
+    <script src="{% static "HU_Event_Scanner_App/adapter-latest.js" %}" type="text/javascript"></script>
+    <script src="{% static "HU_Event_Scanner_App/quagga.js" %}"  type="text/javascript"></script> 
+    <script src="{% static "HU_Event_Scanner_App/live_w_locatorLucas.js" %}" type="text/javascript"></script>
+</body>
+</html>
