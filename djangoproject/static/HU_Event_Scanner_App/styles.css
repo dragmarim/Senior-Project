@@ -11,11 +11,47 @@ img{
    width: 5rem;
 }
 
+.manual-entry{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.manual-entry input{
+	height: 2rem;
+	width: 8rem;
+}
+
+.manual-entry .submit-manual-entry{
+	background: #00573F;
+	color: #FFF;
+	text-decoration: none;
+	padding: .5rem 1rem;
+	font-size: .9rem;
+}
+
+
+.checkMark, .failed{
+	position: absolute;
+	bottom: .5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 3rem;
+}
+
+.checkMark{
+	display: none;
+}
+
+.checkMark path{
+	fill: #00573F;
+}
+
 #res{
 	display: block;
 	text-align: center;
 	padding: .85rem 2rem;
-	background: #00573F;
+	background: red;
 	color: #FFF;
 	margin-top: 1rem;
 }
@@ -30,7 +66,7 @@ img{
 .headline a{
 	text-decoration: none;
 	padding: .5rem 1rem;
-	font-size: .75rem;
+	font-size: .9rem;
 	background: #00573F;
 	color: #FFF;
 }
@@ -76,6 +112,7 @@ dy {
 
 #interactive{
 	text-align: center;
+	position: relative;
 }
 
 #interactive.viewport canvas.drawingBuffer, video.drawingBuffer {
@@ -250,7 +287,8 @@ i.icon-24-scan {
 
   #interactive.viewport {
     margin: auto;
-    width: 300px;    
+    width: 300px;  
+    //width: 100%; TAKE OUT TO ADD BOX
     height: 300px;
     overflow: hidden;
   }

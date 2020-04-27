@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from HU_Event_Scanner_App import views
+from HU_Event_Scanner_App.views import save_scan
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 app_name = "HU_Event_Scanner_App"
@@ -26,6 +27,9 @@ urlpatterns = [
    url(r"^testTim/$", views.testTim, name="testTim"),
    url(r"^testLandon/$", views.testLandon, name="testLandon"),
    url(r"^testLucas/$", views.testLucas, name="testLucas"),
+   url(r"^scanOutput/$", views.scanOutput, name="scanOutput"),
    url(r'login/$', auth_views.login, name='login'),
-   url(r'^logout/$', auth_views.logout, name='logout'),
+   url(r'^save_scan/', save_scan),
+   #url(r'^logout/$', auth_views.logout, name='logout'),
+   url(r'^logout/$', views.logout_request, name='logout'),
 ]

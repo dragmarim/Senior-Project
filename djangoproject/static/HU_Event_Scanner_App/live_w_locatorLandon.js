@@ -1,4 +1,27 @@
 $(function() {
+    var audio = document.getElementById("beep");
+    var checkMark = document.getElementsByClassName('checkMark')[0];
+    var failed = document.getElementsByClassName('failed')[0];
+
+    function confirmScan(){
+	beep();
+       	failed.style.display = "none";
+	checkMark.style.display = "block";
+        document.getElementById("res").style.backgroundColor = "#00573F";
+	setTimeout(reset, 1500);
+    };	
+    
+    function reset(){
+	checkMark.style.display = "none";
+ 	failed.style.display = "block";   
+	document.getElementById("res").style.backgroundColor = "red";
+
+    }
+
+    function beep(){
+	audio.play();
+    }    
+
     var resultCollector = Quagga.ResultCollector.create({
         capture: true,
         capacity: 20,
@@ -20,8 +43,7 @@ $(function() {
             // e.g.: codeResult
             return true;
         }
-    });	
-
+    });
     var App = {
         init: function() {
             var self = this;
@@ -255,7 +277,7 @@ $(function() {
         lastResult : null
     };
 
-    App.init();	
+    App.init();
 
     Quagga.onProcessed(function(result) {
         var drawingCtx = Quagga.canvas.ctx.overlay,
@@ -281,19 +303,26 @@ $(function() {
         }
     });
 
-    Quagga.onDetected(function(result) {	
-	var code = result.codeResult.code;
+    Quagga.onDetected(function(result) {
+        var code = result.codeResult.code;
 	var myRe = /^A2340500\d{6}/;
-	var audio = new Audio('/opt/djangoproject/static/HU_Event_Scanner_App/beep-07.mp3');
-	
+	var date = new Date();
+	var e = document.getElementById("select_event").value;
+
 	console.log(code.substring(8, 14));
 
 	if (code.match(myRe)) {
-		document.getElementById("res").innerHTML = code.substring(8, 14);
-		alert("Scan Successful");
+		document.getElementById("res").innerHTML = code.substring(8, 14);		
+		confirmScan();
+
+		//alert('id: ' + code.substring(8, 14) + '\nadd_date: ' + date.toLocaleDateString("en-US") + '\nchapel_envt_no: ' + e +'\nstat: C\nsess: FA19\nyr: ' +date.getFullYear());
+		
+		setTimeout(function(){ 
+			document.getElementById("res").innerHTML = "ID Result";
+			document.getElementById("res").backgroundColor = "red";
+		}, 1500);
 	} else {
 		document.getElementById("res").innerHTML = "failed";
-		alert("Scan Failed");
 	}
 
         if (App.lastResult !== code) {
@@ -304,7 +333,6 @@ $(function() {
             $node.find("img").attr("src", canvas.toDataURL());
             $node.find("h4.code").html(code);
             $("#result_strip ul.thumbnails").prepend($node);
-        }
+    	}
     });
-
 });

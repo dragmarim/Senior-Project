@@ -26,6 +26,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+#CRONJOBS = [
+#	('38 15 * * *', 'HU_Event_Scanner_App.views.MyCronJob'),
+#]
+
+CRON_CLASSES = [
+    'HU_Event_Scanner_App.views.MyCronJob',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'HU_Event_Scanner_App.apps.MainConfig',
+    'django_cron',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -116,10 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+# Python Code
+# project/project/settings.py
+
 STATIC_URL = '/static/'
 #STATIC_URL = '/opt/djangoproject/HU_Event_Scanner_App/static/'
 
 LOGIN_URL = '/registration/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = "/"
+#LOGOUT_REDIRECT_URL = "/"
 

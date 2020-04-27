@@ -7,18 +7,12 @@ from django.utils.timezone import now
 def get_deadline():
 	return datetime.now();
 
-class Event(models.Model):
-	name = models.CharField(max_length=255)
-	event_id = models.IntegerField(default=0)
-	start_date = models.DateTimeField(default=now)
-	sponsor = models.CharField(max_length=255,default='N/A')
-	end_date = models.DateTimeField(default=now)
-	core = models.BooleanField(default=False)
-	def __str__(self):
-		return self.name
-
 class Scan(models.Model):
-	def __str__(self):
-		return str(self.student_id)
 	student_id = models.IntegerField()
-	time_scanned = models.DateTimeField(default=now)
+	#add_date = models.DateField()
+	date = models.DateTimeField(auto_now_add=True)
+	chapel_envt_no = models.IntegerField()
+	new_scan = models.BooleanField(default=True)
+
+	class Meta:
+		unique_together = ('student_id', 'chapel_envt_no',)

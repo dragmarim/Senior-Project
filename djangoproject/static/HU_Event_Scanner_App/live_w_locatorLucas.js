@@ -1,5 +1,59 @@
-$(function() {
-    var resultCollector = Quagga.ResultCollector.create({
+$(function(){
+    var audio = document.getElementById("beep");
+    var checkMark = document.getElementsByClassName('checkMark')[0];
+    var failed = document.getElementsByClassName('failed')[0];
+
+    function confirmScan(){
+	beep();
+       	failed.style.display = "none";
+	checkMark.style.display = "block";
+        document.getElementById("res").style.backgroundColor = "#00573F";
+	setTimeout(reset, 1500);
+    }	
+    
+    function reset(){
+	checkMark.style.display = "none";
+ 	failed.style.display = "block";   
+	document.getElementById("res").style.backgroundColor = "red";
+    }
+
+    function beep(){
+	audio.play();
+    }
+
+    document.getElementsByClassName('submit-manual-entry')[0].addEventListener('click', function(){
+	var regExpress = new RegExp("\\d{6}");
+   	var idNumber = document.getElementsByClassName('manual-entry-box')[0].value;
+        
+	$.ajax({
+        	url: '/save_scan/',
+                data: {'scan': idNumber,'envt_no': $("#select_event").children("option:selected").val()},
+                type: 'POST',
+                }).done(function(response){
+                  	console.log(response);
+	});
+    });
+
+    let dropdown = $('#select_event');
+
+    dropdown.empty();
+
+//  dropdown.append('<option selected="true" disabled>Choose Event</option>');
+    dropdown.append('<option selected="true">Choose Event</option>');
+
+
+    dropdown.prop('selectedIndex', 0);
+
+
+    const url = 'https://huadmin.huntington.edu/cgi-bin/stuservice/getChapelEventsJSON.cgi';
+
+    $.getJSON(url, function (data) {
+	$.each(data, function (key, entry) {
+       		dropdown.append($('<option></option>').attr('value', entry.EventNumber).text(entry.EventDescription));
+   	})
+    });
+ 
+  var resultCollector = Quagga.ResultCollector.create({
         capture: true,
         capacity: 20,
         blacklist: [{
@@ -285,13 +339,28 @@ $(function() {
 	var myRe = /^A2340500\d{6}/;
 	var date = new Date();
 	var e = document.getElementById("select_event").value;
+        var test = document.getElementById("select_event");
 
 	console.log(code.substring(8, 14));
 
 	if (code.match(myRe)) {
-		document.getElementById("res").innerHTML = code.substring(8, 14);
-	
-		alert('id: ' + code.substring(8, 14) + '\nadd_date: ' + date.toLocaleDateString("en-US") + '\nchapel_envt_no: ' + e +'\nstat: C\nsess: FA19\nyr: ' +date.getFullYear());
+		document.getElementById("res").innerHTML = code.substring(8, 14);		
+		confirmScan();
+
+		//alert('id: ' + code.substring(8, 14) + '\nadd_date: ' + date.toLocaleDateString("en-US") + '\nchapel_envt_no: ' + e +'\nstat: C\nsess: FA19\nyr: ' +date.getFullYear()); 
+
+		$.ajax({
+		  url: '/save_scan/',
+		  data: {'scan': code.substring(8, 14),'envt_no': $("#select_event").children("option:selected").val()},
+		  type: 'POST',
+		}).done(function(response){
+		  console.log(response);
+		});
+
+		setTimeout(function(){ 
+			document.getElementById("res").innerHTML = "ID Result";
+			document.getElementById("res").backgroundColor = "red";
+		}, 1500);
 	} else {
 		document.getElementById("res").innerHTML = "failed";
 	}
@@ -304,6 +373,6 @@ $(function() {
             $node.find("img").attr("src", canvas.toDataURL());
             $node.find("h4.code").html(code);
             $("#result_strip ul.thumbnails").prepend($node);
-    	}
-    });
+    	}   
+ });
 });

@@ -1,32 +1,41 @@
 {% load static %}
 
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Video Stream</title>
   
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" type="text/css" href="{% static "HU_Event_Scanner_App/styles.css" %}"/>
+
+  <script src="{% static "HU_Event_Scanner_App/jquery-3.4.1.min.js" %}"></script>
   <script src="{% static "HU_Event_Scanner_App/videoStream.js" %}"></script>
 </head>
 
 <body>
-	
-    <div class="choose-event">
-        <h2>Scan Event</h2>
-        <p>Select an Event:</p>
-        <select>
-                {% for e in events %}
-                        <option>{{e.name}}</option>
-                {% endfor %}
-        </select>
-    </div>
+	<audio id="beep" autostart="true" type="audio/mpeg">
+		<source src="{% static "HU_Event_Scanner_App/beep.mp3" %}">
+	</audio>
+		
+	<div class="headline">
+		<img src="{% static "HU_Event_Scanner_App/logo.png" %}"/>
+		<a href="/logout">Logout</a>
+	</div>
 
-    <div id="res">ID result</div>
+	<div class="choose-event">
+ 		<p>Select an Event:</p>
+        	<select id="select_event">
+        <!--        	{% for e in events %}
+                        	<option value="{{e.event_id}}">{{e.name}}</option>
+                	{% endfor %}
+        -->
+		</select>
+   	</div>
+
+  <!--  <div id="res">ID result</div> -->
 
 
    	<section id="container" class="container">
@@ -39,11 +48,23 @@
                 <div name="locator_patch-size" value="medium"/>
                 <div name=locator_half-sample" value="checked"/>
                 <div name="numOfWorkers" value="4"/>
-		<label>
+
+		<label class="camera-section">
                     <span>Camera</span>
                     <select name="input-stream_constraints" id="deviceSelection">
                     </select>
                 </label>
+
+		<div class="manual-entry">
+			 <p>Manual Entry:
+                        	<input type="number" maxlength="6" inputmode="numeric"
+oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+               		 </p>
+			 <a class="submit-manual-entry">Submit</a>
+	        </div>
+
+		<div id="res">ID result</div>
+
                 <label style="display: none">
                     <span>Zoom</span>
                     <select name="settings_zoom"></select>
@@ -54,15 +75,21 @@
                 </label>
             </fieldset>
         </div>
-      <div id="result_strip">
+
         <ul class="collector"></ul>
       </div>
-      <div id="interactive" class="viewport"></div>
+      <div id="interactive" class="viewport">
+        <svg class="checkMark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" style="enable-background:new 0 0 100 100;" xml:space="preserve"><path style="" d="M50,0C22.388,0,0,22.388,0,50s22.388,50,50,50s50-22.388,50-50S77.612,0,50,0z M42.248,73.071  L19.244,50.061l8.838-8.838l14.166,14.173l30.055-30.054l8.838,8.838L42.248,73.071z" fill="#010101"/></svg>
+   
+        <svg class="failed" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;" viewBox="0 0 847 1058.75" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd"><defs><style type="text/css"> .fil0 {fill:red} </style></defs><g><path class="fil0" d="M423 20c223,0 404,180 404,403 0,223 -181,404 -404,404 -223,0 -403,-181 -403,-404 0,-223 180,-403 403,-403zm0 339l124 -124 65 64 -124 124 124 124 -65 65 -124 -124 -124 124 -64 -65 124 -124 -124 -124 64 -64 124 124z"/></g></svg>
+
+      </div>
     </section>
 
     <script src="{% static "HU_Event_Scanner_App/jquery-1.9.0.min.js" %}"  type="text/javascript"></script>
     <script src="{% static "HU_Event_Scanner_App/adapter-latest.js" %}" type="text/javascript"></script>
     <script src="{% static "HU_Event_Scanner_App/quagga.js" %}"  type="text/javascript"></script> 
-    <script src="{% static "HU_Event_Scanner_App/live_w_locatorLandon.js" %}" type="text/javascript"></script>
+    <script src="{% static "HU_Event_Scanner_App/live_w_locatorLucas.js" %}" type="text/javascript"></script>    
+    <script src="{% static "HU_Event_Scanner_App/require.js" %}" type="text/javascript"></script>
 </body>
 </html>
